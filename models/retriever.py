@@ -5,7 +5,7 @@ from langchain_openai import OpenAIEmbeddings
 class Retriever:
     """Manages document processing and vector store creation."""
 
-    def __init__(self, documents, api_key, chunk_size=250, chunk_overlap=0):
+    def __init__(self, documents, api_key, chunk_size=750, chunk_overlap=200):
         self.documents = documents
         self.api_key = api_key
         self.chunk_size = chunk_size
