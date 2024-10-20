@@ -28,6 +28,32 @@ class URLDocumentLoader(DocumentLoaderBase):
         print(docs_list)
         return docs_list
 
+class TXTDocumentLoader(DocumentLoaderBase):
+    """Loads documents from multiple .txt files."""
+    def __init__(self, file_paths):
+        self.file_paths = file_paths
+
+    def load_documents(self):
+        docs = []
+        
+        # Load documents from each .txt file in the provided list of paths
+        for file_path in self.file_paths:
+            print(f"Loading document from {file_path}...")
+            
+            with open(file_path, 'r') as f:
+                content = f.read()
+            
+            # Create metadata for the document
+            metadata = {
+                "file_name": file_path
+            }
+            
+            # Append the document
+            docs.append(Document(page_content=content, metadata=metadata))
+        
+        print(f"Loaded {len(docs)} documents from {len(self.file_paths)} files.")
+        return docs
+
 class JSONDocumentLoader(DocumentLoaderBase):
     """Loads documents from multiple JSON files."""
     def __init__(self, file_paths):

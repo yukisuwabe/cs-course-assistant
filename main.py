@@ -1,6 +1,6 @@
 from config.settings import Settings
 from auth.auth_manager import AuthManager
-from models.document_loader import URLDocumentLoader, JSONDocumentLoader
+from models.document_loader import URLDocumentLoader, JSONDocumentLoader, TXTDocumentLoader
 from models.retriever import Retriever
 from controllers.rag_controller import RAGController
 from views.console_view import ConsoleView
@@ -20,7 +20,10 @@ def main():
         jsons = [
             "data/CSClasses.json"
         ]
-        document_loader = JSONDocumentLoader(jsons)
+        txts = [
+            "data/data.txt"
+        ]
+        document_loader = TXTDocumentLoader(txts)
         documents = document_loader.load_documents()
 
         input("Press any key to continue...")
