@@ -1,6 +1,6 @@
 from config.settings import Settings
 from auth.auth_manager import AuthManager
-from models.document_loader import URLDocumentLoader
+from models.document_loader import URLDocumentLoader, JSONDocumentLoader, TXTDocumentLoader
 from models.retriever import Retriever
 from controllers.rag_controller import RAGController
 from views.console_view import ConsoleView
@@ -17,14 +17,22 @@ def main():
             "https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/",
             "https://lilianweng.github.io/posts/2023-10-25-adv-attack-llm/",
         ]
-        document_loader = URLDocumentLoader(urls)
+        jsons = [
+            "data/CSClasses.json"
+        ]
+        txts = [
+            "data/data.txt"
+        ]
+        document_loader = TXTDocumentLoader(txts)
         documents = document_loader.load_documents()
+
+        input("Press any key to continue...")
 
         # Initialize the retriever
         retriever = Retriever(documents, api_key).get_retriever()
 
         # Example questions
-        questions = ["What is prompt engineering?", "What are LLM attacks?"]
+        questions = ["Recommend me some course about AI at Cornell"]
 
         # Initialize the RAG controller with questions
         rag_controller = RAGController(retriever, questions)

@@ -22,10 +22,11 @@ class RAGController:
     def _create_rag_chain(self):
         """Creates the RAG chain combining the LLM and prompt template."""
         prompt = PromptTemplate(
-            template="""You are an assistant for question-answering tasks.
+            template="""
             Use the following documents to answer the question.
+            You can recommend similar courses if the one specified is not found. 
             If you don't know the answer, just say that you don't know.
-            Use three sentences maximum and keep the answer concise:
+            Use 4 sentences MAXIMUM and keep the answer concise:
             Question: {question}
             Documents: {documents}
             Answer:
@@ -37,11 +38,12 @@ class RAGController:
 
     def answer_question(self, question: str) -> str:
         """Answers a single question and returns the answer."""
-        ConsoleView.display_message(f"Question: {question}")
+        ConsoleView.display_message(f"QUESTION: {question}")
         documents = self.retriever.invoke(question)
         doc_texts = "\n".join([doc.page_content for doc in documents])
         answer = self.rag_chain.invoke({"question": question, "documents": doc_texts})
-        ConsoleView.display_message(f"Answer: {answer}")
+        ConsoleView.display_message(f"\nANSWER: {answer}")
+        ConsoleView.display_message("=========================================\n\n")
         return answer
 
     def interactive_loop(self):
