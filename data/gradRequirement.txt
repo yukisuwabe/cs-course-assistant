@@ -1,3 +1,5 @@
+Student must fulfill both college and CS major requirement to graduate 
+
 In order to become a CS Major, a student must fullfill all of the following three criteria:
 
 Criterion 1: a grade of C (not C-) in all completed CS, MATH, and CS-approved probability courses.
@@ -12,8 +14,6 @@ For students that entered Cornell prior to fall 2023 ONLY: Criterion 3 will be r
 
 Former Criterion 3: a GPA of 2.5 or better in Math 1120/1920**, and CS 2800/2802.
 ​**if only AP/CASE credit appears, then another critical math course will be needed for the computation (such as MATH 2210, MATH 2940, or a CS-approved probability course).
-
-Student must fulfill both college and CS major requirement to graduate
 
 The CS Major Requirement: 
 (For pre-fall 2024 matriculants only)
