@@ -23,6 +23,7 @@ class RAGController:
         """Creates the RAG chain combining the LLM and prompt template."""
         prompt = PromptTemplate(
             template="""
+            You are now a professional academic advisor at Cornell University.
             Use the following documents to answer the question.
             You can recommend similar courses if the one specified is not found. 
             If you don't know the answer, just say that you don't know.
@@ -41,6 +42,7 @@ class RAGController:
         ConsoleView.display_message(f"QUESTION: {question}")
         documents = self.retriever.invoke(question)
         doc_texts = "\n".join([doc.page_content for doc in documents])
+        print("Seached up Doc:", doc_texts)
         answer = self.rag_chain.invoke({"question": question, "documents": doc_texts})
         ConsoleView.display_message(f"\nANSWER: {answer}")
         ConsoleView.display_message("=========================================\n\n")

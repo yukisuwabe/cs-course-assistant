@@ -10,16 +10,9 @@ def main():
         # Load environment and settings
         Settings.load_environment()
         api_key = AuthManager.get_api_key()
+        huggingface_model = "thenlper/gte-small"
 
         # Load documents from URLs
-        urls = [
-            "https://lilianweng.github.io/posts/2023-06-23-agent/",
-            "https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/",
-            "https://lilianweng.github.io/posts/2023-10-25-adv-attack-llm/",
-        ]
-        jsons = [
-            "data/CSClasses.json"
-        ]
         txts = [
             "data/data.txt"
         ]
@@ -29,7 +22,7 @@ def main():
         input("Press any key to continue...")
 
         # Initialize the retriever
-        retriever = Retriever(documents, api_key).get_retriever()
+        retriever = Retriever(documents, huggingface_model).get_retriever()
 
         # Example questions
         questions = ["Recommend me some course about AI at Cornell"]
