@@ -111,9 +111,9 @@ class Retriever:
                 encode_kwargs={"normalize_embeddings": True},
             ),
         )
-
+        top_k = 12
         print("Vector store creation complete.")
-        return vectorstore.as_retriever(k=4)
+        return vectorstore.as_retriever(search_kwargs={"k": top_k})
 
     def _build_retriever(self):
         """Build the retriever."""

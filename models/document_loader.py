@@ -73,7 +73,6 @@ class JSONDocumentLoader(DocumentLoaderBase):
             print(f"Loading documents from {file_path}...")
             with open(file_path, "r") as f:
                 data = json.load(f)
-            # print(data)
 
             all_data = data.get("classes", {})
             for subject in all_data:

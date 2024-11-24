@@ -28,7 +28,9 @@ class RAGController:
             template="""
             You are now a professional academic advisor at Cornell University.
             Use the following documents to answer the question.
-            You can recommend similar courses if the one specified is not found. 
+            You can recommend similar courses if the one specified is not found.
+            Courses with lower course number are generally more entry level.
+            If user asks about course information, use the course description for reference. 
             If you don't know the answer, just say that you don't know.
             Use 4 sentences MAXIMUM and keep the answer concise:
             Question: {question}
