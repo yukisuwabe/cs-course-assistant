@@ -5,8 +5,6 @@ from models.retriever import Retriever
 from controllers.rag_controller import RAGController
 from views.console_view import ConsoleView
 
-GENERATE_NEW_EMBEDDING = False
-
 def main():
     try:
         # Load environment and settings
@@ -14,16 +12,15 @@ def main():
         api_key = AuthManager.get_api_key()
         huggingface_model = "thenlper/gte-small"
 
-        if GENERATE_NEW_EMBEDDING:
-            # Load documents from URLs
-            txts = [
-                "data/data.txt"
-            ]
-            document_loader = TXTDocumentLoader(txts)
-            documents = document_loader.load_documents()
+        # Load documents from URLs
+        txts = [
+            "data/data.txt"
+        ]
+        document_loader = TXTDocumentLoader(txts)
+        documents = document_loader.load_documents()
 
         # Initialize the retriever
-        retriever = Retriever(documents, huggingface_model, force_recompute=GENERATE_NEW_EMBEDDING).get_retriever()
+        retriever = Retriever(documents, huggingface_model, force_recompute=True).get_retriever()
 
         # Example questions
         questions = ["Recommend me some course about AI at Cornell"]
