@@ -4,15 +4,15 @@ import requests
 
 url = "https://classes.cornell.edu/api/2.0/search/classes.json?roster=FA24&subject="
 
-with open("CSClasses.json", "w") as f:
+with open("INFOClasses.json", "w") as f:
     try:
         f.write('{\n"classes": { \n')
-        url_request = url + "CS"
+        url_request = url + "INFO"
         response = requests.get(url_request)
         classes = response.json()
         print(url_request)
         if response.status_code == 200:
-            f.write('"CS": ')
+            f.write('"INFO": ')
             json.dump(classes["data"]["classes"], f, ensure_ascii=False, indent=4)
             # f.write(", \n")
         else:

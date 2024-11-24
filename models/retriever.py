@@ -8,10 +8,19 @@ from transformers import AutoTokenizer
 import numpy as np
 from tqdm import tqdm
 
+
 class Retriever:
     """Manages document processing and vector store creation with embedding caching."""
 
-    def __init__(self, documents, model_path, chunk_size=400, chunk_overlap=10, data_folder="./data", force_recompute=False):
+    def __init__(
+        self,
+        documents,
+        model_path,
+        chunk_size=400,
+        chunk_overlap=10,
+        data_folder="./data",
+        force_recompute=False,
+    ):
         """
         Initialize the Retriever.
 
@@ -73,7 +82,7 @@ class Retriever:
             with open(embedding_file, "wb") as f:
                 pickle.dump(embeddings, f)
             print(f"Saved embeddings to: {embedding_file}")
-        
+
         return embeddings
 
     def _create_vector_store(self, doc_splits):
