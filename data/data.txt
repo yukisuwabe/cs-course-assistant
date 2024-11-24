@@ -1,3 +1,122 @@
+Student must fulfill both college and CS major requirement to graduate 
+
+In order to become a CS Major, a student must fullfill all of the following three criteria:
+
+Criterion 1: a grade of C (not C-) in all completed CS, MATH, and CS-approved probability courses.
+
+Criterion 2: a GPA of 2.5 or better in CS 2110/2112* and 2800/2802. ​*alternatively, a GPA of 2.5 or better in ECE 2400/ENGRD 2140 and CS 2800/2802 and CS 3110.
+
+Criterion 3: a GPA of 2.3 or better in Math 1120/1920** and any other completed critical math course(s).
+​**if only AP/CASE credit appears, then another critical math course will be needed for the computation (such as MATH 2210, MATH 2940, or a CS-approved probability course).
+ 
+
+For students that entered Cornell prior to fall 2023 ONLY: Criterion 3 will be reviewed using the better outcome between Criterion 3 (above) and Former Criterion 3 (below).  Note that Criteria 1 and 2 did not change.
+
+Former Criterion 3: a GPA of 2.5 or better in Math 1120/1920**, and CS 2800/2802.
+​**if only AP/CASE credit appears, then another critical math course will be needed for the computation (such as MATH 2210, MATH 2940, or a CS-approved probability course).
+
+The CS Major Requirement: 
+(For pre-fall 2024 matriculants only)
+  -Five CS Core courses:
+    -CS 2800 or CS 2802 - Discrete Structures
+    -CS 3110 - Data Structures and Functional Programming
+    -CS 3410 or 3420 - Digital Systems
+    -CS 4410 - Operating Systems or CS 4414  - Systems Programming
+    -CS 4820 - Theory of Algorithms
+  -Three CS electives:
+    -Three CS 4000+ courses (3+ credits each). CS 4090, CS 4998, and CS 4999 are NOT allowed. CS 3700 and CS 3780 are allowed.
+
+(For fall 2024 matriculants and later)
+  Six CS Core courses:
+    -CS 2800 or CS 2802 - Discrete Structures
+    -CS 3110 - Data Structures and Functional Programming
+    -CS 3410 or CS 3420 - Digital Systems
+    -CS 3700 - Foundations of AI, Reasoning and Decision-Making or CS 3780  - Introduction to Machine Learning
+    -CS 4410 - Operating Systems or CS 4414  - Systems Programming
+    -CS 4820 - Theory of Algorithms
+  Two CS electives:
+    -Two CS 4000+ courses (3+ credits each). CS 4090, CS 4998, and CS 4999 are NOT allowed. CS 3700 or CS 3780 allowed if not used in CS core.
+
+(For all matriculants)
+  One CS Practicum or Project course:
+    -Accepted courses are CS practicums (CS 4xx1), or CS 3152, CS 4152, CS 4154, CS 4740, CS 4752, CS 5150, CS 5152, CS 5412, CS 5414, CS 5431, CS 5625, or CS 5643.
+  Three Technical electives:
+    -Three 3000+ courses (3+ credits each) with qualifyig prereq. List of qualifying prerequisites available here. Up to two CS 4999 (other research or independent studies may be submitted for department review). At most one 2000-level course allowed.
+  Three External Specialization courses:
+    -Three 3000+ courses (3+ credits each) from the same subject area. CS courses are not allowed. INFO 3300, INFO 4300, INFO 4302, INFO 5300, and LING 4474 are not allowed, nor do we allow research, independent study, project team or TA credits in this area.
+  Major-Approved elective(s):
+    -At least 3 credits total. All academic courses are allowed, except: PE courses, courses numbered 10xx, Engineering AEW's, or ROTC courses (unless cross-listed with an academic department).
+  Advisor-Approved elective(s):
+    -At least 6 credits total. All academic courses are allowed, except: PE courses, courses numbered 10xx, Engineering AEW's, and ROTC courses below the 3000-level. At most, 6 credits of project team credits can be used towards the major- and advisor-approved electives.
+  
+
+College of Engineering Requirement: 
+  -Two First-year Writing Seminars
+  -Six Liberal Studies courses:
+    -Minimum 18 credits total
+    -2 courses must be 2000-level or higher
+    -(For pre-fall 2024 matriculants)
+      -These six courses must be chosen from at least three of the following groups:
+        -Group 1: Cultural Analysis, Literature and the Arts, Social Difference (from categories CA, LA/LAD, ALC, SCD)
+        -Group 2: Historical Analysis (from categories HA, HST)
+        -Group 3: Ethics, Cognition, and Moral Reasoning (from categories KCM, ETM)
+        -Group 4: Social Science and Global Citizenship (from categories SBA, SSC, GLC)
+        -Group 5: Foreign Languages (FL - not literature courses)
+        -Group 6: Communications in Engineering (CE)
+    -(For fall 2024 and later matriculants)
+      -These six courses must be chosen from at least three of the following 7 groups, with at least one course of 3 or more credits coming from Group 7 (RE):
+        -Group 1: Cultural Analysis, Literature and the Arts, Social Difference (from categories CA, LA/LAD, ALC, SCD-HA only)
+        -Group 2: Historical Analysis (from categories HA, HST)
+        -Group 3: Ethics, Cognition, and Moral Reasoning (from categories KCM, ETM)
+        -Group 4: Social Science and Global Citizenship (from categories SBA, SSC, GLC)
+        -Group 5: Foreign Languages (FL - not literature courses)
+        -Group 6: Communications in Engineering (CE)
+        -Group 7: Race and Equity (RE) (from categories SCD-AS or D-AG only)
+  -Three Mathematics courses:
+    -MATH 1910, MATH 1920, and MATH 2940
+  -Four Science courses (plus Phys lab (PHYS 1110) for students that take PHYS 1112 F21 or later), as follows:
+    -PHYS 1112 (or PHYS 1116)
+    -PHYS 2213 (or PHYS 2217)
+    -CHEM 2090
+    -CHEM 2080 (or CHEM 2150) or PHYS 2214 (or PHYS 2218) or one of the following approved substitutions:
+      -BTRY 3080, ECE 3100, ECON 3130, MATH 2930, or MATH 4710
+  -One Introductory Programming course:
+    -CS 1110 or 1112
+  -Three Engineering Distribution courses:
+    -D1 must be CS/ENGRD 2110 or 2112
+      -Note: CS/ENGRD 2112 is a 4-credit intensive (honors) alternative to CS/ENGRD 2110.
+    -D2 must be an ENGRD course not from the scientific computing category.
+    -D3 must be an ENGRI course taken during the Freshman year.
+  -One course fulfilling the Engineering Communications requirement
+  -(For pre-fall 2024 matriculants only)
+    -One approved Probability course: BTRY/STSCI 3080 or CS 4850 or ECE 3100 or ECON 3130 or ENGRD 2700 or MATH 4710
+
+College of Arts and Sciences Requirement: 
+  -Two First-year Writing Seminars (FWS)
+  -Foreign Language requirement (native speakers of a foreign langauge may be exempted):
+    -Option 1: Completing an intermediate foreign language course at Cornell at the 2000-level or above.
+    -Option 2: Completing at least 11 credits in a single foreign language at Cornell.
+
+  -Distribution Requirements:
+    -Students must take courses that collectively satisfy ten(10) distribution requirements:
+      -Arts, Literature, and Culture (ALC-AS)
+      -Biological Sciences (BIO-AS)
+      -Ethics and the Mind (ETM-AS)
+      -Global Citizenship (GLC-AS)
+      -Historical Analysis (HST-AS)
+      -Physical Sciences (PHS-AS)
+      -Social Difference (SCD-AS)
+      -Social Sciences (SSC-AS)
+      -Statistics and Data Science (SDS-AS)  
+      -Symbolic and Mathematical Reasoning (SMR-AS)  
+  -Notes: 
+    -An A&S course can simultaneously satisfy up to two distribution requirements.
+    -Students can double-count distribution requirements on a maximum of two courses (i.e. taking a minimum of eight courses to meet all ten requirements).
+    -To fulfill the requirements, courses must contain the suffix -AS. Courses offered outside of the college that are designated without the -AS suffix in the Class Roster will not fulfill A&S requirements.
+    -Courses counting toward a major may also count to fulfill distribution requirements.
+    -​AP,IB and A-Level credits may not be used to meet distribution requirements.
+
+
 class: AAP 1100
 class title: The Worlds We Make
 description: This co-taught class brings together faculty members from across the college and all first-year students in AAP to develop the skills necessary to work toward a more just, sustainable, equitable, and compassionate future. The Worlds We Make examines structural racism, colonialism, injustice, bias and their manifestations through the lens of architecture, art, and urban studies. Students will engage with how to identify bias, structural inequity, and systems of oppression, learn about restorative justice and harm reduction in our fields and beyond, practice allyship and make space for marginalized and historically minoritized identities. The class will emphasize communicating and advocating across differences via challenging discussion, analytical drawing, creative practice, and writing.
