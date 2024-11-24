@@ -16,7 +16,7 @@ class Retriever:
         self,
         documents,
         model_path,
-        chunk_size=400,
+        chunk_size=200,
         chunk_overlap=10,
         data_folder="./data",
         force_recompute=False,

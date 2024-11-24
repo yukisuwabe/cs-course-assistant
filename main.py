@@ -15,7 +15,7 @@ def main():
         # Load environment and settings
         Settings.load_environment()
         api_key = AuthManager.get_api_key()
-        huggingface_model = "HIT-TMG/KaLM-embedding-multilingual-mini-instruct-v1"
+        huggingface_model = "thenlper/gte-small"
 
         # Load documents from URLs
         txts = ["data/data.txt", "data/gradRequirement.txt"]
