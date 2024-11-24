@@ -11,7 +11,7 @@ from tqdm import tqdm
 class Retriever:
     """Manages document processing and vector store creation with embedding caching."""
 
-    def __init__(self, documents, model_path, chunk_size=400, chunk_overlap=10, data_folder="./data", force_recompute=False):
+    def __init__(self, documents, model_path, chunk_size=200, chunk_overlap=20, data_folder="./data", force_recompute=False):
         """
         Initialize the Retriever.
 
@@ -102,9 +102,9 @@ class Retriever:
                 encode_kwargs={"normalize_embeddings": True},
             ),
         )
-
+        top_k = 20
         print("Vector store creation complete.")
-        return vectorstore.as_retriever(k=4)
+        return vectorstore.as_retriever(k=top_k)
 
     def _build_retriever(self):
         """Build the retriever."""

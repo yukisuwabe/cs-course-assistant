@@ -19,10 +19,15 @@ def main():
         document_loader = TXTDocumentLoader(txts)
         documents = document_loader.load_documents()
 
+        grad_req = [
+            "data/data.txt"
+        ]
+        grad_req_load = TXTDocumentLoader()
+
         input("Press any key to continue...")
 
         # Initialize the retriever
-        retriever = Retriever(documents, huggingface_model).get_retriever()
+        retriever = Retriever(documents, huggingface_model, force_recompute=False).get_retriever()
 
         # Example questions
         questions = ["Recommend me some course about AI at Cornell"]
