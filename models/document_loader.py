@@ -101,5 +101,5 @@ class JSONDocumentLoader(DocumentLoaderBase):
                     docs.append(Document(page_content=content))
 
         print(f"Loaded {len(docs)} documents from {len(self.file_paths)} files.")
-        print(docs)
+        # print(docs)
         return docs

@@ -4,19 +4,22 @@ from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from views.console_view import ConsoleView  # Import the view for display
 
+
 class RAGController:
     """Manages the Retrieval-Augmented Generation (RAG) process."""
 
     def __init__(self, retriever, questions: Optional[List[str]] = None):
         """
         Initializes the RAGController with an optional list of questions.
-        
+
         Args:
             retriever: The retriever to use for document retrieval.
             questions (Optional[List[str]]): A list of questions to be answered.
         """
         self.retriever = retriever
-        self.questions = questions or []  # Initialize with provided questions or an empty list
+        self.questions = (
+            questions or []
+        )  # Initialize with provided questions or an empty list
         self.rag_chain = self._create_rag_chain()
 
     def _create_rag_chain(self):
@@ -42,7 +45,7 @@ class RAGController:
         ConsoleView.display_message(f"QUESTION: {question}")
         documents = self.retriever.invoke(question)
         doc_texts = "\n".join([doc.page_content for doc in documents])
-        print("Seached up Doc:", doc_texts)
+        # print("Seached up Doc:", doc_texts)
         answer = self.rag_chain.invoke({"question": question, "documents": doc_texts})
         ConsoleView.display_message(f"\nANSWER: {answer}")
         ConsoleView.display_message("=========================================\n\n")

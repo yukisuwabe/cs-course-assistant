@@ -1,21 +1,24 @@
 from config.settings import Settings
 from auth.auth_manager import AuthManager
-from models.document_loader import URLDocumentLoader, JSONDocumentLoader, TXTDocumentLoader
+from models.document_loader import (
+    URLDocumentLoader,
+    JSONDocumentLoader,
+    TXTDocumentLoader,
+)
 from models.retriever import Retriever
 from controllers.rag_controller import RAGController
 from views.console_view import ConsoleView
+
 
 def main():
     try:
         # Load environment and settings
         Settings.load_environment()
         api_key = AuthManager.get_api_key()
-        huggingface_model = "thenlper/gte-small"
+        huggingface_model = "HIT-TMG/KaLM-embedding-multilingual-mini-instruct-v1"
 
         # Load documents from URLs
-        txts = [
-            "data/data.txt"
-        ]
+        txts = ["data/data.txt", "data/gradRequirement.txt"]
         document_loader = TXTDocumentLoader(txts)
         documents = document_loader.load_documents()
 
@@ -35,6 +38,7 @@ def main():
 
     except Exception as e:
         ConsoleView.display_error(e)
+
 
 if __name__ == "__main__":
     main()

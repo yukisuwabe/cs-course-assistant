@@ -1,10 +1,12 @@
 import unittest
+from controllers.rag_controller import RAGController
 from models.document_loader import (
     URLDocumentLoader,
     TXTDocumentLoader,
     JSONDocumentLoader,
 )
 from models.retriever import Retriever
+from main import main
 from langchain.schema import Document
 from unittest.mock import patch, mock_open, MagicMock, Mock
 from config.settings import Settings
@@ -12,6 +14,7 @@ from auth.auth_manager import AuthManager
 import numpy as np
 import os
 from types import SimpleNamespace
+from views.console_view import ConsoleView
 
 
 class TestDocumentLoaders(unittest.TestCase):
@@ -98,17 +101,14 @@ class TestRetrievers(unittest.TestCase):
         documents = [Document(page_content="Test content", metadata={})]
         retriever = Retriever(documents, "path/to/model")
 
-        # Call the method to test
         chunks = retriever._split_documents()
 
-        # Assertions
         mock_tokenizer.assert_called_once_with("path/to/model")
         mock_splitter.assert_called_once()
         mock_splitter_instance.split_documents.assert_called_once_with(documents)
         self.assertEqual(len(chunks), 2)
         self.assertEqual(chunks[0]["page_content"], "Chunk 1")
         self.assertEqual(chunks[1]["page_content"], "Chunk 2")
-        # mock_splitter.return_value.split_documents.assert_called_once_with(documents)
 
     @patch("models.retriever.Retriever._build_retriever", return_value=None)
     @patch(
@@ -131,7 +131,6 @@ class TestRetrievers(unittest.TestCase):
         ]
         doc_splits = retriever._split_documents()
 
-        # Mock embedding creation
         mock_embedding.return_value.embed_documents.return_value = [np.array([1, 2, 3])]
 
         embeddings = retriever._load_or_generate_embeddings(doc_splits)
@@ -162,7 +161,6 @@ class TestRetrievers(unittest.TestCase):
         ]
         doc_splits = retriever._split_documents()
 
-        # Mock embedding and FAISS creation
         mock_embedding.return_value.embed_documents.return_value = [np.array([1, 2, 3])]
         mock_faiss.from_embeddings.return_value.as_retriever.return_value = (
             "mock_retriever"
@@ -176,7 +174,7 @@ class TestRetrievers(unittest.TestCase):
     @patch("models.retriever.HuggingFaceEmbeddings")
     @patch("models.retriever.FAISS")
     def test_retriever_building(
-        mocker, mock_faiss, mock_embedding, mock_splitter, mock_tokenizer
+        self, mock_faiss, mock_embedding, mock_splitter, mock_tokenizer
     ):
         documents = [{"text": "End-to-end testing of the retriever pipeline."}]
         retriever = Retriever(
@@ -187,7 +185,61 @@ class TestRetrievers(unittest.TestCase):
         )
 
         retriever_obj = retriever.get_retriever()
-        assert retriever_obj is not None  # Should return a retriever
+        self.assertNotEqual(retriever_obj, None)
+
+
+class TestRAG(unittest.TestCase):
+    @patch("controllers.rag_controller.RAGController.run")
+    @patch("controllers.rag_controller.RAGController.__init__")
+    def test_rag_controller(self, mock_init, mock_run):
+        mock_init.return_value = None
+        rag_controller = RAGController(Mock(), ["Test question"])
+        rag_controller.run()
+        mock_run.assert_called_once()
+
+    def test_create_rag_chain(self):
+        retriever = Mock()
+        rag_controller = RAGController(retriever)
+        rag_chain = rag_controller._create_rag_chain()
+        self.assertIsNotNone(rag_chain)
+
+    def test_rag_answer_question(self):
+        Settings.load_environment()
+        huggingface_model = "HIT-TMG/KaLM-embedding-multilingual-mini-instruct-v1"
+
+        txts = ["data/data.txt", "data/gradRequirement.txt"]
+        document_loader = TXTDocumentLoader(txts)
+        documents = document_loader.load_documents()
+
+        retriever = Retriever(documents, huggingface_model).get_retriever()
+
+        rag_controller = RAGController(retriever)
+
+        answer = rag_controller.answer_question(
+            "What is a good course to learn Object Oriented Programming?"
+        )
+        self.assertIn("CS 2110", answer)
+
+    @patch("builtins.input", side_effect=["What is AI?", ":q"])
+    @patch.object(ConsoleView, "display_message")
+    @patch.object(RAGController, "answer_question")
+    def test_interactive_loop(
+        self, mock_answer_question, mock_display_message, mock_input
+    ):
+        retriever = MagicMock()
+        questions = ["What is a good class to take to learn Python?"]
+        rag_controller = RAGController(retriever, questions)
+
+        rag_controller.interactive_loop()
+
+        mock_answer_question.assert_any_call(
+            "What is a good class to take to learn Python?"
+        )
+
+        mock_answer_question.assert_any_call(
+            "What is a good class to take to learn Python?"
+        )
+        mock_display_message.assert_any_call("Exiting. Goodbye!")
 
 
 if __name__ == "__main__":
