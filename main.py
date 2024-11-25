@@ -8,35 +8,45 @@ from views.console_view import ConsoleView
 def main():
     try:
         # Load environment and settings
-        Settings.load_environment()
-        api_key = AuthManager.get_api_key()
+        # Settings.load_environment()
+        # api_key = AuthManager.get_api_key()
         huggingface_model = "thenlper/gte-small"
 
-        # Load course documents
+        # LOAD DOCUMENTS
         course_txts = [
             "data/data.txt"
         ]
         course_document_loader = TXTDocumentLoader(course_txts)
         course_documents = course_document_loader.load_documents()
 
-        # Load graduation requirement documents
         grad_req_txts = [
             "data/gradRequirement.txt"
         ]
         grad_document_loader = TXTDocumentLoader(grad_req_txts)
         grad_documents = grad_document_loader.load_documents()
 
-        # Initialize the retrievers
-        course_retriever = Retriever(course_documents, huggingface_model, force_recompute=False).get_retriever()
-        grad_retriever = Retriever(grad_documents, huggingface_model, force_recompute=False, top_k=1).get_retriever()
+        # BUILD RETRIEVERS
+        course_retriever = Retriever(
+            documents=course_documents,
+            model_path=huggingface_model,
+            retriever_name="course", 
+            force_recompute=False,
+            top_k=8
+        ).get_retriever()
 
-        # Example questions
+        grad_retriever = Retriever(
+            documents=grad_documents,
+            model_path=huggingface_model,
+            retriever_name="grad", 
+            force_recompute=False,
+            top_k=2
+        ).get_retriever()
+
+        # PREDEFINED QUESTIONS
         questions = ["Recommend me some courses about AI at Cornell"]
+        ConsoleView.display_message("Default Questions", questions)
+        rag_controller = RAGController(course_retriever, grad_retriever, questions, is_debug=False)
 
-        # Initialize the RAG controller with both retrievers and questions
-        rag_controller = RAGController(course_retriever, grad_retriever, questions)
-
-        # Start the RAG application (handles both initial and user questions)
         rag_controller.run()
 
     except Exception as e:
