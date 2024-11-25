@@ -23,7 +23,9 @@ def main():
         documents = document_loader.load_documents()
 
         # Initialize the retriever
-        retriever = Retriever(documents, huggingface_model, force_recompute=True).get_retriever()
+        retriever = Retriever(
+            documents, huggingface_model, force_recompute=False
+        ).get_retriever()
 
         # Example questions
         questions = ["Recommend me some course about AI at Cornell"]

@@ -82,7 +82,6 @@ class Retriever:
             with open(embedding_file, "wb") as f:
                 pickle.dump(embeddings, f)
             print(f"Saved embeddings to: {embedding_file}")
-
         return embeddings
 
     def _create_vector_store(self, doc_splits):

@@ -1,4 +1,5 @@
 import unittest
+import pickle
 from controllers.rag_controller import RAGController
 from models.document_loader import (
     URLDocumentLoader,
@@ -6,11 +7,9 @@ from models.document_loader import (
     JSONDocumentLoader,
 )
 from models.retriever import Retriever
-from main import main
 from langchain.schema import Document
 from unittest.mock import patch, mock_open, MagicMock, Mock
 from config.settings import Settings
-from auth.auth_manager import AuthManager
 import numpy as np
 import os
 from types import SimpleNamespace
@@ -28,14 +27,20 @@ class TestDocumentLoaders(unittest.TestCase):
         self.assertEqual(len(documents), 2)
         self.assertEqual(documents[0].page_content, "Test content")
 
-    @patch("builtins.open", new_callable=mock_open, read_data="Test content")
-    def test_txt_document_loader(self, mock_file):
-        file_paths = ["test1.txt", "test2.txt"]
+    # @patch("builtins.open", new_callable=mock_open, read_data="Test content")
+    def test_txt_document_loader(self):
+        file_paths = ["./data/gradRequirement.txt"]
         loader = TXTDocumentLoader(file_paths)
         documents = loader.load_documents()
-        self.assertEqual(len(documents), 2)
-        self.assertEqual(documents[0].page_content, "Test content")
-        self.assertEqual(documents[0].metadata["file_name"], "test1.txt")
+
+        with open("./data/gradRequirement.txt", "r") as f:
+            content = f.read()
+
+        self.assertEqual(len(documents), 1)
+        self.assertEqual(documents[0].page_content, content)
+        self.assertEqual(
+            documents[0].metadata["file_name"], "./data/gradRequirement.txt"
+        )
 
     def test_json_document_loader(self):
         file_paths = ["./data/CSClasses.json", "./data/INFOClasses.json"]
@@ -115,7 +120,7 @@ class TestRetrievers(unittest.TestCase):
         "models.retriever.Retriever._split_documents",
     )
     @patch("models.retriever.HuggingFaceEmbeddings")
-    def test_load_or_generate_embeddings(
+    def test_load_or_generate_embeddings_new(
         self, mock_embedding, mock_split_documents, mock_build_retriever
     ):
         documents = [{"text": "This is a sample document for embedding."}]
@@ -135,6 +140,41 @@ class TestRetrievers(unittest.TestCase):
 
         embeddings = retriever._load_or_generate_embeddings(doc_splits)
 
+        self.assertEqual(len(embeddings), len(doc_splits))
+        self.assertIsInstance(embeddings, list)
+        self.assertTrue(os.path.exists("./test_data/embeddings.pkl"))
+
+    @patch("models.retriever.Retriever._build_retriever", return_value=None)
+    @patch(
+        "models.retriever.Retriever._split_documents",
+    )
+    @patch("models.retriever.HuggingFaceEmbeddings")
+    @patch("models.retriever.pickle.load", wraps=pickle.load)
+    def test_load_or_generate_embeddings_exists(
+        self,
+        mock_pickle_load,
+        mock_embedding,
+        mock_split_documents,
+        mock_build_retriever,
+    ):
+        documents = [{"text": "This is a sample document for embedding."}]
+        retriever = Retriever(
+            documents=documents,
+            model_path="path/to/model",
+            data_folder="./test_data",
+            force_recompute=False,
+        )
+        mock_split_documents.return_value = [
+            SimpleNamespace(**{"page_content": "Mock Chunk 1"}),
+            SimpleNamespace(**{"page_content": "Mock Chunk 2"}),
+        ]
+        doc_splits = retriever._split_documents()
+
+        mock_embedding.return_value.embed_documents.return_value = [np.array([1, 2, 3])]
+
+        embeddings = retriever._load_or_generate_embeddings(doc_splits)
+
+        mock_pickle_load.assert_called_once()
         self.assertEqual(len(embeddings), len(doc_splits))
         self.assertIsInstance(embeddings, list)
         self.assertTrue(os.path.exists("./test_data/embeddings.pkl"))
@@ -205,7 +245,7 @@ class TestRAG(unittest.TestCase):
 
     def test_rag_answer_question(self):
         Settings.load_environment()
-        huggingface_model = "HIT-TMG/KaLM-embedding-multilingual-mini-instruct-v1"
+        huggingface_model = "thenlper/gte-small"
 
         txts = ["data/data.txt", "data/gradRequirement.txt"]
         document_loader = TXTDocumentLoader(txts)
@@ -235,10 +275,7 @@ class TestRAG(unittest.TestCase):
         mock_answer_question.assert_any_call(
             "What is a good class to take to learn Python?"
         )
-
-        mock_answer_question.assert_any_call(
-            "What is a good class to take to learn Python?"
-        )
+        mock_answer_question.assert_any_call("What is AI?")
         mock_display_message.assert_any_call("Exiting. Goodbye!")
 
 
