@@ -233,7 +233,7 @@ class TestRetrievers(unittest.TestCase):
 class TestRAG(unittest.TestCase):
     @patch("controllers.rag_controller.RAGController._create_grad_inference_chain")
     @patch("controllers.rag_controller.RAGController._create_answer_chain")
-    def test_rag_controller(self, mock_answer_chain, mock_grad_chain):
+    def test_rag_controller_init(self, mock_answer_chain, mock_grad_chain):
         rag_controller = RAGController(
             "course", "grad", ["question1", "question2"], is_debug=False
         )
@@ -251,7 +251,7 @@ class TestRAG(unittest.TestCase):
         rag_chain = rag_controller._create_grad_inference_chain()
         self.assertIsNotNone(rag_chain)
 
-    def test_create_answer_inference_chain(self):
+    def test_create_answer_chain(self):
         course_retriever = Mock()
         grad_retriever = Mock()
         rag_controller = RAGController(course_retriever, grad_retriever)
