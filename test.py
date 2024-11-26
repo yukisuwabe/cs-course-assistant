@@ -123,6 +123,8 @@ class TestRetrievers(unittest.TestCase):
     def test_load_or_generate_embeddings_new(
         self, mock_embedding, mock_split_documents, mock_build_retriever
     ):
+        if os.path.exists("./test_data/embeddings_default.pkl"):
+            os.remove("./test_data/embeddings_default.pkl")
         documents = [{"text": "This is a sample document for embedding."}]
         retriever = Retriever(
             documents=documents,
@@ -175,8 +177,8 @@ class TestRetrievers(unittest.TestCase):
         embeddings = retriever._load_or_generate_embeddings(doc_splits)
 
         mock_pickle_load.assert_called_once()
-        self.assertEqual(len(embeddings), len(doc_splits))
         self.assertIsInstance(embeddings, list)
+        self.assertEqual(len(embeddings), len(doc_splits))
         self.assertTrue(os.path.exists("./test_data/embeddings.pkl"))
 
     @patch("models.retriever.Retriever._build_retriever", return_value=None)
@@ -193,7 +195,7 @@ class TestRetrievers(unittest.TestCase):
             documents=documents,
             model_path="path/to/model",
             data_folder="./test_data",
-            force_recompute=True,
+            force_recompute=False,
         )
         mock_split_documents.return_value = [
             SimpleNamespace(**{"page_content": "Mock Chunk 1"}),
@@ -221,7 +223,7 @@ class TestRetrievers(unittest.TestCase):
             documents=documents,
             model_path="path/to/model",
             data_folder="./test_data",
-            force_recompute=True,
+            force_recompute=False,
         )
 
         retriever_obj = retriever.get_retriever()
@@ -229,31 +231,56 @@ class TestRetrievers(unittest.TestCase):
 
 
 class TestRAG(unittest.TestCase):
-    @patch("controllers.rag_controller.RAGController.run")
-    @patch("controllers.rag_controller.RAGController.__init__")
-    def test_rag_controller(self, mock_init, mock_run):
-        mock_init.return_value = None
-        rag_controller = RAGController(Mock(), ["Test question"])
-        rag_controller.run()
-        mock_run.assert_called_once()
+    @patch("controllers.rag_controller.RAGController.create_grad_inference_chain")
+    @patch("controllers.rag_controller.RAGController.create_answer_chain")
+    def test_rag_controller(self, mock_answer_chain, mock_inference_chain):
+        rag_controller = RAGController(
+            "course", "grad", ["question1", "question2"], is_debug=False
+        )
 
-    def test_create_rag_chain(self):
-        retriever = Mock()
-        rag_controller = RAGController(retriever)
-        rag_chain = rag_controller._create_rag_chain()
+    def test_create_grad_inference_chain(self):
+        course_retriever = Mock()
+        grad_retriever = Mock()
+        rag_controller = RAGController(course_retriever, grad_retriever)
+        rag_chain = rag_controller._create_grad_inference_chain()
+        self.assertIsNotNone(rag_chain)
+
+    def test_create_answer_inference_chain(self):
+        course_retriever = Mock()
+        grad_retriever = Mock()
+        rag_controller = RAGController(course_retriever, grad_retriever)
+        rag_chain = rag_controller._create_answer_chain()
         self.assertIsNotNone(rag_chain)
 
     def test_rag_answer_question(self):
         Settings.load_environment()
         huggingface_model = "thenlper/gte-small"
 
-        txts = ["data/data.txt", "data/gradRequirement.txt"]
-        document_loader = TXTDocumentLoader(txts)
-        documents = document_loader.load_documents()
+        course_txts = ["data/data.txt"]
+        course_document_loader = TXTDocumentLoader(course_txts)
+        course_documents = course_document_loader.load_documents()
 
-        retriever = Retriever(documents, huggingface_model).get_retriever()
+        grad_req_txts = ["data/gradRequirement.txt"]
+        grad_document_loader = TXTDocumentLoader(grad_req_txts)
+        grad_documents = grad_document_loader.load_documents()
 
-        rag_controller = RAGController(retriever)
+        course_retriever = Retriever(
+            documents=course_documents,
+            model_path=huggingface_model,
+            retriever_name="course",
+            force_recompute=False,
+            top_k=8,
+        ).get_retriever()
+
+        grad_retriever = Retriever(
+            documents=grad_documents,
+            model_path=huggingface_model,
+            retriever_name="grad",
+            force_recompute=False,
+            top_k=2,
+        ).get_retriever()
+
+        rag_controller = RAGController(course_retriever, grad_retriever, is_debug=False)
 
         answer = rag_controller.answer_question(
             "What is a good course to learn Object Oriented Programming?"
@@ -266,9 +293,12 @@ class TestRAG(unittest.TestCase):
     def test_interactive_loop(
         self, mock_answer_question, mock_display_message, mock_input
     ):
-        retriever = MagicMock()
+        course_retriever = MagicMock()
+        grad_retriever = MagicMock()
         questions = ["What is a good class to take to learn Python?"]
-        rag_controller = RAGController(retriever, questions)
+        rag_controller = RAGController(
+            course_retriever, grad_retriever, questions, is_debug=False
+        )
 
         rag_controller.interactive_loop()
 

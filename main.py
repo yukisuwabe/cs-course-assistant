@@ -46,7 +46,8 @@ def main():
 
         # PREDEFINED QUESTIONS
         questions = ["Recommend me some courses about AI at Cornell"]
-        ConsoleView.display_message("Default Questions", questions)
+        ConsoleView.display_message("Default Questions")
+        ConsoleView.display_message(questions)
         rag_controller = RAGController(
             course_retriever, grad_retriever, questions, is_debug=False
         )
