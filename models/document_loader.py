@@ -40,19 +40,14 @@ class TXTDocumentLoader(DocumentLoaderBase):
         self.file_paths = file_paths
 
     def load_documents(self):
-        docs = []
-
-        # Load documents from each .txt file in the provided list of paths
+        docs = []       
         for file_path in self.file_paths:
             print(f"Loading document from {file_path}...")
-
-            with open(file_path, "r") as f:
+            with open(file_path, 'r') as f:
                 content = f.read()
-
-            # Create metadata for the document
-            metadata = {"file_name": file_path}
-
-            # Append the document
+            metadata = {
+                "file_name": file_path
+            }
             docs.append(Document(page_content=content, metadata=metadata))
 
         print(f"Loaded {len(docs)} documents from {len(self.file_paths)} files.")
@@ -67,13 +62,11 @@ class JSONDocumentLoader(DocumentLoaderBase):
 
     def load_documents(self):
         docs = []
-
-        # Load documents from each JSON file in the provided list of paths
         for file_path in self.file_paths:
             print(f"Loading documents from {file_path}...")
             with open(file_path, "r") as f:
                 data = json.load(f)
-
+                
             all_data = data.get("classes", {})
             for subject in all_data:
                 for course in all_data[subject]:
@@ -96,7 +89,6 @@ class JSONDocumentLoader(DocumentLoaderBase):
                         + f"Distribution: {distribution}\n"
                     )
 
-                    # Append the document
                     docs.append(Document(page_content=content))
 
         print(f"Loaded {len(docs)} documents from {len(self.file_paths)} files.")
