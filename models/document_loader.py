@@ -36,19 +36,14 @@ class TXTDocumentLoader(DocumentLoaderBase):
     def load_documents(self):
         docs = []
         
-        # Load documents from each .txt file in the provided list of paths
         for file_path in self.file_paths:
             print(f"Loading document from {file_path}...")
-            
             with open(file_path, 'r') as f:
                 content = f.read()
-            
-            # Create metadata for the document
             metadata = {
                 "file_name": file_path
             }
             
-            # Append the document
             docs.append(Document(page_content=content, metadata=metadata))
         
         print(f"Loaded {len(docs)} documents from {len(self.file_paths)} files.")
@@ -61,8 +56,6 @@ class JSONDocumentLoader(DocumentLoaderBase):
 
     def load_documents(self):
         docs = []
-        
-        # Load documents from each JSON file in the provided list of paths
         for file_path in self.file_paths:
             print(f"Loading documents from {file_path}...")
             with open(file_path, 'r') as f:
@@ -73,10 +66,8 @@ class JSONDocumentLoader(DocumentLoaderBase):
                 course_title = course.get('titleShort', 'No title')
                 for group in course.get('enrollGroups', []):
                     for section in group.get('classSections', []):
-                        # Extract meeting times, instructors, and notes for each section
                         section_info = []
                         
-                        # Extracting meeting details
                         for meeting in section.get('meetings', []):
                             start_time = meeting.get('timeStart', 'N/A')
                             end_time = meeting.get('timeEnd', 'N/A')
@@ -84,7 +75,6 @@ class JSONDocumentLoader(DocumentLoaderBase):
                             facility = meeting.get('facilityDescr', 'N/A')
                             section_info.append(f"Meets {days} from {start_time} to {end_time} at {facility}.")
                         
-                        # Extracting instructor details
                         instructors = [
                             f"{instructor.get('firstName', '')} {instructor.get('lastName', '')}"
                             for instructor in meeting.get('instructors', [])
@@ -92,15 +82,13 @@ class JSONDocumentLoader(DocumentLoaderBase):
                         if instructors:
                             section_info.append(f"Instructors: {', '.join(instructors)}")
                         
-                        # Extracting class notes
                         notes = [
                             note.get('descrlong', 'No notes available')
                             for note in section.get('notes', [])
                         ]
                         if notes:
                             section_info.append(f"Notes: {' '.join(notes)}")
-                        
-                        # Create document content and metadata
+
                         content = f"Course: {course_title}\n" + "\n".join(section_info)
                         metadata = {
                             "course_id": course.get('crseId', 'N/A'),
@@ -110,7 +98,6 @@ class JSONDocumentLoader(DocumentLoaderBase):
                             "notes": notes,
                         }
                         
-                        # Append the document
                         docs.append(Document(page_content=content, metadata=metadata))
 
         print(f"Loaded {len(docs)} documents from {len(self.file_paths)} files.")
