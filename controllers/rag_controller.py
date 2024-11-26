@@ -4,10 +4,17 @@ from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from views.console_view import ConsoleView  # Import the view for display
 
+
 class RAGController:
     """Manages the Retrieval-Augmented Generation (RAG) process."""
 
-    def __init__(self, course_retriever, grad_retriever, questions: Optional[List[str]] = None, is_debug=False):
+    def __init__(
+        self,
+        course_retriever,
+        grad_retriever,
+        questions: Optional[List[str]] = None,
+        is_debug=False,
+    ):
         """
         Initializes the RAGController with an optional list of questions.
 
@@ -44,7 +51,6 @@ class RAGController:
         llm = ChatOllama(model="llama3.2", temperature=0)
         return prompt | llm | StrOutputParser()
 
-
     def _create_answer_chain(self):
         """Creates the LLM chain for generating the final answer."""
         prompt = PromptTemplate(
@@ -76,10 +82,9 @@ class RAGController:
         grad_doc_texts = "\n".join([doc.page_content for doc in grad_documents])
 
         # Infer graduation requirements using the grad inference chain
-        inferred_grad_req = self.grad_inference_chain.invoke({
-            "question": question,
-            "grad_docs": grad_doc_texts
-        }).strip()
+        inferred_grad_req = self.grad_inference_chain.invoke(
+            {"question": question, "grad_docs": grad_doc_texts}
+        ).strip()
 
         new_query = f"{question} {inferred_grad_req}"
         if self.is_debug:
@@ -93,11 +98,13 @@ class RAGController:
             print("\n\n\n\nRetrieved Course Documents:", course_doc_texts)
 
         # Generate final response
-        answer = self.answer_chain.invoke({
-            "question": question,
-            "inferred_grad_req": inferred_grad_req,
-            "course_docs": course_doc_texts
-        }).strip()
+        answer = self.answer_chain.invoke(
+            {
+                "question": question,
+                "inferred_grad_req": inferred_grad_req,
+                "course_docs": course_doc_texts,
+            }
+        ).strip()
 
         ConsoleView.display_message(f"\nANSWER: {answer}")
         ConsoleView.display_message("=========================================\n\n")

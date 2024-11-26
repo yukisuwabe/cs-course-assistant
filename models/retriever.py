@@ -7,6 +7,7 @@ from transformers import AutoTokenizer
 import numpy as np
 from tqdm import tqdm
 
+
 class Retriever:
     """Manages document processing and vector store creation with embedding caching."""
 
@@ -46,7 +47,9 @@ class Retriever:
 
     def _split_documents(self):
         """Split documents into chunks."""
-        print(f"Splitting documents into chunks for retriever '{self.retriever_name}'...")
+        print(
+            f"Splitting documents into chunks for retriever '{self.retriever_name}'..."
+        )
         tokenizer = AutoTokenizer.from_pretrained(self.model_path)
         splitter = RecursiveCharacterTextSplitter.from_huggingface_tokenizer(
             tokenizer=tokenizer,
@@ -59,7 +62,9 @@ class Retriever:
 
     def _load_or_generate_embeddings(self, doc_splits):
         """Load embeddings from file or generate them if not available or forced to recompute."""
-        embeddings_file = os.path.join(self.data_folder, f"embeddings_{self.retriever_name}.pkl")
+        embeddings_file = os.path.join(
+            self.data_folder, f"embeddings_{self.retriever_name}.pkl"
+        )
         embeddings = []
 
         if os.path.exists(embeddings_file) and not self.force_recompute:
@@ -78,17 +83,21 @@ class Retriever:
 
             # Progress tracking for embedding creation
             for doc in tqdm(doc_splits, desc="Embedding Documents", unit="doc"):
-                embeddings.append(embedding_model.embed_documents([doc.page_content])[0])
+                embeddings.append(
+                    embedding_model.embed_documents([doc.page_content])[0]
+                )
 
             with open(embeddings_file, "wb") as f:
                 pickle.dump(embeddings, f)
             print(f"Saved embeddings to: {embeddings_file}")
-        
+
         return embeddings
 
     def _create_vector_store(self, doc_splits):
         """Create a vector store with local embeddings and progress tracking."""
-        print(f"Creating vector store with FAISS for retriever '{self.retriever_name}'...")
+        print(
+            f"Creating vector store with FAISS for retriever '{self.retriever_name}'..."
+        )
 
         embeddings = self._load_or_generate_embeddings(doc_splits)
         embeddings_array = np.array(embeddings, dtype=np.float32)
@@ -107,7 +116,7 @@ class Retriever:
             ),
         )
         print(f"Vector store creation complete for retriever '{self.retriever_name}'.")
-        return vectorstore.as_retriever(search_kwargs={'k': self.top_k})
+        return vectorstore.as_retriever(search_kwargs={"k": self.top_k})
 
     def _build_retriever(self):
         """Build the retriever."""
