@@ -18,7 +18,7 @@ class RAGController:
         """
         self.course_retriever = course_retriever
         self.grad_retriever = grad_retriever
-        self.questions = questions or []  # Initialize with provided questions or an empty list
+        self.questions = questions or [] 
         self.grad_inference_chain = self._create_grad_inference_chain()
         self.answer_chain = self._create_answer_chain()
         self.is_debug = is_debug
@@ -81,10 +81,6 @@ class RAGController:
             "grad_docs": grad_doc_texts
         }).strip()
 
-        if not inferred_grad_req:
-            # If no specific grad requirements are inferred, use general grad requirements
-            inferred_grad_req = "General graduation requirements for Cornell University."
-
         new_query = f"{question} {inferred_grad_req}"
         if self.is_debug:
             print("\n\n\n\nQuestion with Inferred Graduation Requirements:", new_query)
@@ -109,12 +105,11 @@ class RAGController:
 
     def interactive_loop(self):
         """Starts an interactive loop to answer initial and user-provided questions."""
-        # First, answer any initial questions
+
         while self.questions:
-            question = self.questions.pop(0)  # Get the first question from the list
+            question = self.questions.pop(0) 
             self.answer_question(question)
 
-        # Then, take user input until the user types ':q'
         while True:
             user_input = input("Enter your question (:q to quit): ").strip()
             if user_input.lower() == ":q":

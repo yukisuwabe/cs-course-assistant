@@ -7,9 +7,7 @@ from views.console_view import ConsoleView
 
 def main():
     try:
-        # Load environment and settings
-        # Settings.load_environment()
-        # api_key = AuthManager.get_api_key()
+        
         huggingface_model = "thenlper/gte-small"
 
         # LOAD DOCUMENTS
