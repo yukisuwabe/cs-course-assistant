@@ -13,7 +13,7 @@ from views.console_view import ConsoleView
 
 def main():
     try:
-        
+
         huggingface_model = "thenlper/gte-small"
 
         # LOAD DOCUMENTS

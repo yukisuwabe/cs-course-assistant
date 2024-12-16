@@ -18,4 +18,8 @@ with open("classes.json", "r") as classes:
                 f.write("\n")
             if c["catalogDistr"]:
                 f.write("distribution categories: " + c["catalogDistr"] + "\n")
+            if c["catalogPrereqCoreq"]:
+                f.write(
+                    "prerequisites/co-requisites: " + c["catalogPrereqCoreq"] + "\n"
+                )
             f.write("\n")

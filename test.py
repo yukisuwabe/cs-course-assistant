@@ -258,7 +258,31 @@ class TestRAG(unittest.TestCase):
         rag_chain = rag_controller._create_answer_chain()
         self.assertIsNotNone(rag_chain)
 
-    def test_rag_answer_question(self):
+    @patch("builtins.input", side_effect=["What is AI?", ":q"])
+    @patch.object(ConsoleView, "display_message")
+    @patch.object(RAGController, "answer_question")
+    def test_interactive_loop(
+        self, mock_answer_question, mock_display_message, mock_input
+    ):
+        course_retriever = MagicMock()
+        grad_retriever = MagicMock()
+        questions = ["What is a good class to take to learn Python?"]
+        rag_controller = RAGController(
+            course_retriever, grad_retriever, questions, is_debug=False
+        )
+
+        rag_controller.interactive_loop()
+
+        mock_answer_question.assert_any_call(
+            "What is a good class to take to learn Python?"
+        )
+        mock_answer_question.assert_any_call("What is AI?")
+        mock_display_message.assert_any_call("Exiting. Goodbye!")
+
+
+class TestAnswers(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
         Settings.load_environment()
         huggingface_model = "thenlper/gte-small"
 
@@ -286,33 +310,79 @@ class TestRAG(unittest.TestCase):
             top_k=2,
         ).get_retriever()
 
-        rag_controller = RAGController(course_retriever, grad_retriever, is_debug=False)
+        cls.rag_controller = RAGController(
+            course_retriever, grad_retriever, is_debug=False
+        )
 
-        answer = rag_controller.answer_question(
+    def test_rag_answer_question_2110(self):
+        answer = self.rag_controller.answer_question(
             "What is a good course to learn Object Oriented Programming?"
         )
         self.assertIn("CS 2110", answer)
 
-    @patch("builtins.input", side_effect=["What is AI?", ":q"])
-    @patch.object(ConsoleView, "display_message")
-    @patch.object(RAGController, "answer_question")
-    def test_interactive_loop(
-        self, mock_answer_question, mock_display_message, mock_input
-    ):
-        course_retriever = MagicMock()
-        grad_retriever = MagicMock()
-        questions = ["What is a good class to take to learn Python?"]
-        rag_controller = RAGController(
-            course_retriever, grad_retriever, questions, is_debug=False
+    def test_rag_answer_question_3780(self):
+        answer = self.rag_controller.answer_question(
+            "What are some introductory machine learning classes you would recommend?"
         )
+        self.assertIn("CS 3780", answer)
 
-        rag_controller.interactive_loop()
-
-        mock_answer_question.assert_any_call(
-            "What is a good class to take to learn Python?"
+    def test_rag_answer_question_4620(self):
+        answer = self.rag_controller.answer_question(
+            "Is there any class that explores how computers are used to generate graphics?"
         )
-        mock_answer_question.assert_any_call("What is AI?")
-        mock_display_message.assert_any_call("Exiting. Goodbye!")
+        self.assertIn("CS 4620", answer)
+
+    def test_rag_answer_question_4820(self):
+        answer = self.rag_controller.answer_question(
+            "I want to learn more about algorithms and data structures, what are some required classes for CS major that explores these fields?"
+        )
+        self.assertIn("CS 4820", answer)
+
+    def test_rag_answer_question_4701(self):
+        answer = self.rag_controller.answer_question(
+            "After learning some basics about AI, I want to put them into practice. What is the best class to do so?"
+        )
+        self.assertIn("CS 4701", answer)
+
+    def test_rag_answer_question_3300(self):
+        answer = self.rag_controller.answer_question(
+            "What class do you know that teaches how to visualize data with a webpage?"
+        )
+        self.assertIn("3300", answer)
+
+    def test_rag_answer_question_4750_4756(self):
+        answer = self.rag_controller.answer_question(
+            "Do you know of any computer science classes that are related to robot building and software?"
+        )
+        self.assertTrue("CS 4750" in answer or "CS 4756" in answer)
+
+    def test_rag_answer_question_3410(self):
+        answer = self.rag_controller.answer_question(
+            "Which Cornell CS core course teaches you about the architecture of computers?"
+        )
+        self.assertIn("CS 3410", answer)
+
+    def test_rag_answer_question_4320(self):
+        answer = self.rag_controller.answer_question(
+            "I want to learn more about how large groups of data are stored in today’s modern devices, which course should I take?"
+        )
+        self.assertIn("CS 4320", answer)
+
+    def test_rag_answer_question_as_requirement(self):
+        answer = self.rag_controller.answer_question(
+            "I am a Arts and Sciences student. If I took AMST 2006, which distribution requirement would it fulfill?"
+        )
+        self.assertIn("ALC-AS", answer)
+
+    def test_rag_answer_question_eng_requirement(self):
+        answer = self.rag_controller.answer_question(
+            "I am a College of Engineering student. If I already took MATH 1910 and MATH 1920, which math classes do I need to take to satisfy my math requirements?"
+        )
+        self.assertIn("MATH 2940", answer)
+
+    @classmethod
+    def tearDownClass(cls):
+        del cls.rag_controller
 
 
 if __name__ == "__main__":
