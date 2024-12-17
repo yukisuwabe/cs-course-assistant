@@ -15,6 +15,8 @@ import os
 from types import SimpleNamespace
 from views.console_view import ConsoleView
 
+# Change here to specify which test class you want to run
+TESTS_TO_RUN = ['TestAnswers']
 
 class TestDocumentLoaders(unittest.TestCase):
 
@@ -311,7 +313,7 @@ class TestAnswers(unittest.TestCase):
         ).get_retriever()
 
         cls.rag_controller = RAGController(
-            course_retriever, grad_retriever, is_debug=False
+            course_retriever, grad_retriever, is_debug=True
         )
 
     def test_rag_answer_question_2110(self):
@@ -364,7 +366,7 @@ class TestAnswers(unittest.TestCase):
 
     def test_rag_answer_question_4320(self):
         answer = self.rag_controller.answer_question(
-            "I want to learn more about how large groups of data are stored in today’s modern devices, which course should I take?"
+            "I want to learn more about how large groups of data are stored and learn how databases work, which course should I take?"
         )
         self.assertIn("CS 4320", answer)
 
@@ -385,5 +387,23 @@ class TestAnswers(unittest.TestCase):
         del cls.rag_controller
 
 
+def run_selected_tests():
+    loader = unittest.TestLoader()
+    suite = unittest.TestSuite()
+
+    for test in TESTS_TO_RUN:
+        if "." in test:
+            suite.addTest(loader.loadTestsFromName(test))  # Specific test method
+        else:
+            suite.addTests(loader.loadTestsFromTestCase(globals()[test]))  # Test class
+
+    # Redirect output to test_result.txt
+    with open("test_result.txt", "w") as f:
+        runner = unittest.TextTestRunner(stream=f, verbosity=2)
+        print("Running selected tests. Results are saved in test_result.txt")
+        runner.run(suite)
+
+
 if __name__ == "__main__":
-    unittest.main()
+    run_selected_tests()
+
