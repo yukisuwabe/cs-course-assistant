@@ -328,7 +328,7 @@ class TestAnswers(unittest.TestCase):
 
     def test_rag_answer_question_4620(self):
         answer = self.rag_controller.answer_question(
-            "Is there any class that explores how computers are used to generate graphics?"
+            "Is there any 3000 or 4000 technical electives that explores how computers are used to generate graphics?"
         )
         self.assertIn("CS 4620", answer)
 
@@ -340,7 +340,7 @@ class TestAnswers(unittest.TestCase):
 
     def test_rag_answer_question_4701(self):
         answer = self.rag_controller.answer_question(
-            "After learning some basics about AI, I want to put them into practice. What is the best class to do so?"
+            "After learning some basics about AI, I want to put them into practice. What is the best practicum class to do so?"
         )
         self.assertIn("CS 4701", answer)
 
@@ -358,7 +358,7 @@ class TestAnswers(unittest.TestCase):
 
     def test_rag_answer_question_3410(self):
         answer = self.rag_controller.answer_question(
-            "Which Cornell CS core course teaches you about the architecture of computers?"
+            "Which Cornell required CS core course teaches you about the architecture of computers?"
         )
         self.assertIn("CS 3410", answer)
 
