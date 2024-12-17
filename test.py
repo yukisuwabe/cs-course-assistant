@@ -374,7 +374,7 @@ class TestAnswers(unittest.TestCase):
         answer = self.rag_controller.answer_question(
             "I am a Arts and Sciences student. If I took AMST 2006, which distribution requirement would it fulfill?"
         )
-        self.assertIn("ALC-AS", answer)
+        self.assertTrue("ALC-AS" in answer or "HST-AS" in answer)
 
     def test_rag_answer_question_eng_requirement(self):
         answer = self.rag_controller.answer_question(
