@@ -40,6 +40,8 @@ class RAGController:
                 2) A brief description of the actual graduation requirement itself and any important conditions (e.g., required course level, distribution category, department, or prerequisite details).
                 3) DO NOT Hallucinate anything if it is not in the document, just say no specific requirement needed.
 
+                Be sure to say that grad requirement is not important when it is not!
+
                 Focus on terms that will aid in retrieving and selecting the relevant courses from the embeddings.
                 Be accurate, concise, and follow the guidance from the provided documents.
                 Respond with only the list of short sentences, NOTHING ELSE!!!
@@ -62,7 +64,10 @@ class RAGController:
             You can recommend courses that satisfy the inferred graduation requirements.
             Courses with lower course numbers are generally more entry-level.
             Provide both lower, middle, and higher ranged course recommendation when the level varies.
+            Output in natural languages as an advisor, not in bullet points.
+            Focus on the course that is most related to the question if all satisfy the grad requirement.
             If you don't know the answer, just say that you don't know.
+            Make sure to consider prompts from Infeered Graduation Requirements carefully.
             Use 6 sentences MAXIMUM and keep the answer concise.
 
             Question: {question}

@@ -7,8 +7,8 @@ test_rag_answer_question_4620 (__main__.TestAnswers) ... FAIL
 test_rag_answer_question_4701 (__main__.TestAnswers) ... ok
 test_rag_answer_question_4750_4756 (__main__.TestAnswers) ... ok
 test_rag_answer_question_4820 (__main__.TestAnswers) ... ok
-test_rag_answer_question_as_requirement (__main__.TestAnswers) ... FAIL
-test_rag_answer_question_eng_requirement (__main__.TestAnswers) ... FAIL
+test_rag_answer_question_as_requirement (__main__.TestAnswers) ... ok
+test_rag_answer_question_eng_requirement (__main__.TestAnswers) ... ok
 
 ======================================================================
 FAIL: test_rag_answer_question_4620 (__main__.TestAnswers)
@@ -16,25 +16,9 @@ FAIL: test_rag_answer_question_4620 (__main__.TestAnswers)
 Traceback (most recent call last):
   File "/Users/peterwu/Desktop/Senior/cs4701_project/TG_ai-esteins-disciples_xw656_ys462/test.py", line 335, in test_rag_answer_question_4620
     self.assertIn("CS 4620", answer)
-AssertionError: 'CS 4620' not found in 'Based on the course documents, I recommend taking CS 3300, Visual Data Analytics for the Web, as it explores graphics generation using computers and has a lower level number. It also aligns with the inferred graduation requirements for Technical electives: computer graphics, visualization, game development, human-computer interaction.'
-
-======================================================================
-FAIL: test_rag_answer_question_as_requirement (__main__.TestAnswers)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/Users/peterwu/Desktop/Senior/cs4701_project/TG_ai-esteins-disciples_xw656_ys462/test.py", line 377, in test_rag_answer_question_as_requirement
-    self.assertIn("ALC-AS", answer)
-AssertionError: 'ALC-AS' not found in "AMST 2006 fulfills the Historical Analysis (HST-AS) distribution requirement. Since it's a lower-level course with a category of HST-AS, I would recommend taking it over any other option that also fulfills this requirement. This is because courses with lower course numbers are generally more entry-level and easier to fit into your schedule. By taking AMST 2006 first, you'll have fulfilled one of your distribution requirements while keeping your course load manageable."
-
-======================================================================
-FAIL: test_rag_answer_question_eng_requirement (__main__.TestAnswers)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/Users/peterwu/Desktop/Senior/cs4701_project/TG_ai-esteins-disciples_xw656_ys462/test.py", line 383, in test_rag_answer_question_eng_requirement
-    self.assertIn("MATH 2940", answer)
-AssertionError: 'MATH 2940' not found in "Based on the course documents, since you've already taken MATH 1910 and MATH 1920, to fulfill the remaining math requirement, I recommend taking MATH 2930 or MATH 4710. However, I don't know which one is more suitable for your needs."
+AssertionError: 'CS 4620' not found in "Based on your inferred graduation requirements, I recommend taking CS 5621 Computer Graphics Practicum or CS 5650 Virtual and Augmented Reality. Both courses explore graphics programming and visualization, which align with your technical electives requirement.\n\nFor a more entry-level course, consider CS 1620 Visual Imaging in the Electronic Age, which covers digital pictorial representation and display, including computer graphics modeling and rendering.\n\nIf you're interested in exploring graphics generation using computers, I suggest taking CS 3300 Visual Data Analytics for the Web, which uses Javascript and SVG to develop visualizations."
 
 ----------------------------------------------------------------------
-Ran 11 tests in 454.935s
+Ran 11 tests in 504.757s
 
-FAILED (failures=3)
+FAILED (failures=1)
