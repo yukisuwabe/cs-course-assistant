@@ -31,20 +31,25 @@ class RAGController:
         self.is_debug = is_debug
 
     def _create_grad_inference_chain(self):
-        """Creates the LLM chain for generating course description keywords from the question."""
+        """Creates the LLM chain for generating both concise course keywords and clear requirement info from the question."""
         prompt = PromptTemplate(
             template="""
-                You are an assistant that helps generate course description keywords from student queries.
-                Given the student's question and relevant graduation requirement documents, generate a list of keywords or phrases that describe the type of courses that fufills the inferred graduation requirement.
-                Focus on terms that will aid in retrieving relevant courses from the course embeddings.
-                Make sure to follow the guidance from your retrieved document, give special attention to distribution requirement and course levels.
-                Be as accurate as possible.
-                Keep the keywords concise and relevant.
-                Respond with only the list of keywords, NOTHING ELSE!!!
+                You are an assistant that helps generate course description keywords and minimal requirement details from student queries.
+                Given the student's question and the relevant graduation requirement documents, generate at most 5 sentences that includes:
+                1) Short complete sentences describing the inferred graduation requirement.
+                2) A brief description of the actual graduation requirement itself and any important conditions (e.g., required course level, distribution category, department, or prerequisite details).
+                3) DO NOT Hallucinate anything if it is not in the document, just say no specific requirement needed.
 
+                Be sure to say that grad requirement is not important when it is not!
+                Also, when you are certain with that the answer can be generated from the requirements, say that below course information won't be important.
+
+                Focus on terms that will aid in retrieving and selecting the relevant courses from the embeddings.
+                Be accurate, concise, and follow the guidance from the provided documents.
+                Respond with only the list of short sentences, NOTHING ELSE!!!
+                
                 Question: {question}
                 Graduation Requirement Documents: {grad_docs}
-                Course Description Keywords:
+                Course Description Keywords and Requirement Info:
                 """,
             input_variables=["question", "grad_docs"],
         )
@@ -55,19 +60,23 @@ class RAGController:
         """Creates the LLM chain for generating the final answer."""
         prompt = PromptTemplate(
             template="""
-            You are a professional academic advisor at Cornell University.
-            Use the following course documents to answer the student's question.
-            You can recommend courses that satisfy the inferred graduation requirements.
-            Courses with lower course numbers are generally more entry-level.
-            Prefer the lower level course when available.
-            If you don't know the answer, just say that you don't know.
-            Use 4 sentences MAXIMUM and keep the answer concise.
+                You are a professional academic advisor at Cornell University.
+                Use the provided "Course Documents" to answer the student's question and recommend courses that fulfill the inferred graduation requirements.
+                Ensure that the recommendations come directly from the course documents, if different course level is available on the same topic, include a range of course levels.
+                Focus primarily on courses that directly address the student’s needs, but also strive for a well-rounded set of suggestions.
+                If there are similar courses, state them all, unless intructed otherwise specifically.
+                If insufficient information is available to give a recommendation, say that you do not know.
+                Prefer under 5000 level courses if similar courses are available.
+                Keep the answer concise and limit it to a maximum of 6 sentences.
 
-            Question: {question}
-            Inferred Graduation Requirements: {inferred_grad_req}
-            Course Documents: {course_docs}
-            Answer:
-            """,
+                Question: {question}
+                Inferred Graduation Requirements: {inferred_grad_req}
+                Course Documents: {course_docs}
+
+                Answer:
+                """
+
+            ,
             input_variables=["question", "inferred_grad_req", "course_docs"],
         )
         llm = ChatOllama(model="llama3.2", temperature=0)
@@ -88,6 +97,7 @@ class RAGController:
 
         new_query = f"{question} {inferred_grad_req}"
         if self.is_debug:
+            print("\n\n\n\nGrad Docs:", grad_doc_texts)
             print("\n\n\n\nQuestion with Inferred Graduation Requirements:", new_query)
 
         # Retrieve course documents using the new query

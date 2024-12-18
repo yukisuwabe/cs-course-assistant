@@ -1,0 +1,16 @@
+test_rag_answer_question_2110 (__main__.TestAnswers) ... ok
+test_rag_answer_question_3300 (__main__.TestAnswers) ... ok
+test_rag_answer_question_3410 (__main__.TestAnswers) ... ok
+test_rag_answer_question_3780 (__main__.TestAnswers) ... ok
+test_rag_answer_question_4320 (__main__.TestAnswers) ... ok
+test_rag_answer_question_4620 (__main__.TestAnswers) ... ok
+test_rag_answer_question_4701 (__main__.TestAnswers) ... ok
+test_rag_answer_question_4750_4756 (__main__.TestAnswers) ... ok
+test_rag_answer_question_4820 (__main__.TestAnswers) ... ok
+test_rag_answer_question_as_requirement (__main__.TestAnswers) ... ok
+test_rag_answer_question_eng_requirement (__main__.TestAnswers) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 1135.956s
+
+OK
