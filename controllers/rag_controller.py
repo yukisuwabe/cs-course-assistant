@@ -35,12 +35,13 @@ class RAGController:
         prompt = PromptTemplate(
             template="""
                 You are an assistant that helps generate course description keywords and minimal requirement details from student queries.
-                Given the student's question and the relevant graduation requirement documents, generate a concise list (up to 6 short sentences) that includes:
-                1) Keywords or phrases describing the types of courses that fulfill the inferred graduation requirement.
+                Given the student's question and the relevant graduation requirement documents, generate at most 5 sentences that includes:
+                1) Short complete sentences describing the inferred graduation requirement.
                 2) A brief description of the actual graduation requirement itself and any important conditions (e.g., required course level, distribution category, department, or prerequisite details).
                 3) DO NOT Hallucinate anything if it is not in the document, just say no specific requirement needed.
 
                 Be sure to say that grad requirement is not important when it is not!
+                Also, when you are certain with that the answer can be generated from the requirements, say that below course information won't be important.
 
                 Focus on terms that will aid in retrieving and selecting the relevant courses from the embeddings.
                 Be accurate, concise, and follow the guidance from the provided documents.
@@ -59,22 +60,23 @@ class RAGController:
         """Creates the LLM chain for generating the final answer."""
         prompt = PromptTemplate(
             template="""
-            You are a professional academic advisor at Cornell University.
-            Use the following course documents to answer the student's question.
-            You can recommend courses that satisfy the inferred graduation requirements.
-            Courses with lower course numbers are generally more entry-level.
-            Provide both lower, middle, and higher ranged course recommendation when the level varies.
-            Output in natural languages as an advisor, not in bullet points.
-            Focus on the course that is most related to the question if all satisfy the grad requirement.
-            If you don't know the answer, just say that you don't know.
-            Make sure to consider prompts from Infeered Graduation Requirements carefully.
-            Use 6 sentences MAXIMUM and keep the answer concise.
+                You are a professional academic advisor at Cornell University.
+                Use the provided "Course Documents" to answer the student's question and recommend courses that fulfill the inferred graduation requirements.
+                Ensure that the recommendations come directly from the course documents, if different course level is available on the same topic, include a range of course levels.
+                Focus primarily on courses that directly address the student’s needs, but also strive for a well-rounded set of suggestions.
+                If there are similar courses, state them all, unless intructed otherwise specifically.
+                If insufficient information is available to give a recommendation, say that you do not know.
+                Prefer under 5000 level courses if similar courses are available.
+                Keep the answer concise and limit it to a maximum of 6 sentences.
 
-            Question: {question}
-            Inferred Graduation Requirements: {inferred_grad_req}
-            Course Documents: {course_docs}
-            Answer:
-            """,
+                Question: {question}
+                Inferred Graduation Requirements: {inferred_grad_req}
+                Course Documents: {course_docs}
+
+                Answer:
+                """
+
+            ,
             input_variables=["question", "inferred_grad_req", "course_docs"],
         )
         llm = ChatOllama(model="llama3.2", temperature=0)
@@ -95,6 +97,7 @@ class RAGController:
 
         new_query = f"{question} {inferred_grad_req}"
         if self.is_debug:
+            print("\n\n\n\nGrad Docs:", grad_doc_texts)
             print("\n\n\n\nQuestion with Inferred Graduation Requirements:", new_query)
 
         # Retrieve course documents using the new query

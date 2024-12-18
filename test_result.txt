@@ -1,6 +1,6 @@
 test_rag_answer_question_2110 (__main__.TestAnswers) ... ok
 test_rag_answer_question_3300 (__main__.TestAnswers) ... ok
-test_rag_answer_question_3410 (__main__.TestAnswers) ... FAIL
+test_rag_answer_question_3410 (__main__.TestAnswers) ... ok
 test_rag_answer_question_3780 (__main__.TestAnswers) ... ok
 test_rag_answer_question_4320 (__main__.TestAnswers) ... ok
 test_rag_answer_question_4620 (__main__.TestAnswers) ... ok
@@ -10,15 +10,7 @@ test_rag_answer_question_4820 (__main__.TestAnswers) ... ok
 test_rag_answer_question_as_requirement (__main__.TestAnswers) ... ok
 test_rag_answer_question_eng_requirement (__main__.TestAnswers) ... ok
 
-======================================================================
-FAIL: test_rag_answer_question_3410 (__main__.TestAnswers)
 ----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/Users/peterwu/Desktop/Senior/cs4701_project/TG_ai-esteins-disciples_xw656_ys462/test.py", line 365, in test_rag_answer_question_3410
-    self.assertIn("CS 3410", answer)
-AssertionError: 'CS 3410' not found in "Based on the inferred graduation requirements, I would recommend CS 4820 - Introduction to Analysis of Algorithms as the course that teaches about the architecture of computers. This course covers topics such as algorithm design techniques, undecidability and NP-completeness, and algorithmic techniques for intractable problems, which are related to computer architecture.\n\nAlternatively, you could also consider taking CS 4420 - Computer Architecture, but since it's not a required core course, I would recommend starting with CS 4820."
+Ran 11 tests in 1135.956s
 
-----------------------------------------------------------------------
-Ran 11 tests in 457.056s
-
-FAILED (failures=1)
+OK
