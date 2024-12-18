@@ -393,11 +393,10 @@ def run_selected_tests():
 
     for test in TESTS_TO_RUN:
         if "." in test:
-            suite.addTest(loader.loadTestsFromName(test))  # Specific test method
+            suite.addTest(loader.loadTestsFromName(test))  
         else:
-            suite.addTests(loader.loadTestsFromTestCase(globals()[test]))  # Test class
+            suite.addTests(loader.loadTestsFromTestCase(globals()[test]))  
 
-    # Redirect output to test_result.txt
     with open("test_result.txt", "w") as f:
         runner = unittest.TextTestRunner(stream=f, verbosity=2)
         print("Running selected tests. Results are saved in test_result.txt")
